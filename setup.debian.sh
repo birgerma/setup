@@ -5,7 +5,7 @@
 # Set keyboard layout
 
 # Install tmux
-sudo apt install tmux
+sudo apt install tmux -y
 
 # Install vivaldi
 sudo apt install wget -y
@@ -16,6 +16,15 @@ echo "deb [signed-by=/usr/share/keyrings/vivaldi-browser.gpg arch=$(dpkg --print
 sudo apt update && sudo apt install vivaldi-stable -y
 
 # Install alacritty (and cargo)
+sudo apt install curl -y
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs >> cargo_install.sh
+chmod +x cargo_install.sh
+./cargo_install.sh -y
+
+source $HOME/.cargo/env
+cargo install alacritty
+
+rm cargo_install.sh
 
 
 sudo apt autoremove -y
