@@ -1,9 +1,12 @@
 
-ALIAS_FILE=$HOME/.bashrc
+if [ -f ~/.bash_aliases ]; then
+    ALIAS_FILE=~/.bash_aliases
+else
+    ALIAS_FILE=~/.bashrc
+fi
 
 REMOTE_URL=git@github.com:birgerma/config.git
 CONFIG_ALIAS='alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"'
-# alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
 
 function add_alias(){
     # Only add append aliases if not already in TARGET_FILE
