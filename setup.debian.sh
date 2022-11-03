@@ -5,6 +5,7 @@
 # Set keyboard layout
 
 # Install tmux
+sudo apt install tmux
 
 # Install vivaldi
 sudo apt install wget -y
