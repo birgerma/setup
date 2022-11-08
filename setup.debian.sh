@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Pull dotfiles
+./setup-dotfiles.sh
 
 # Set keyboard layout
 
