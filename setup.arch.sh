@@ -3,7 +3,7 @@
 
 function install(){
 #    echo "Installing $1"
-    sudo pacman -S $1 --noconfirm
+    sudo pacman -S --noconfirm $1
 }
 
 # Install base tools
@@ -33,3 +33,4 @@ install vivaldi
 
 # Install text editors
 install "nano emacs vim"
+setxkbmap -layout colemak-plus
