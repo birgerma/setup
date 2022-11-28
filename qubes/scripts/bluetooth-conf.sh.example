@@ -1,0 +1,52 @@
+#!/bin/bash
+ 
+set -o errexit
+set -o nounset
+
+# Customize the following value by the USB device ID (look in qvm-usb --list)
+export usb_device="sys-usb:2-4";
+# Customize the following value with the bluetooth headphones' MAC address
+export headphones="4C:87:5D:2D:F0:E7"
+
+if [ $# -ne 1 ]; then
+    export VM="multimedia"
+else
+    export VM="$1";
+fi
+
+# if [ $# -ne 1 ]; then
+if [ -z $VM ]; then
+        echo -en "Usage: bluetooth-audio VM-name\n\tStarts the bluetooth audio for the VM specified\n" >&2
+        exit 1
+else
+#        export VM="$1";
+         
+    # Looks for the USB device
+#    qvm-usb --list | grep -F "$usb_device" >/dev/null || {
+    qvm-usb list | grep -F "$usb_device" >/dev/null || {
+        echo "Error: device $usb_device is not connected." >&2
+        exit 1;
+    }
+ 
+    # Checks if the device is already connected to the target VM
+#    if qvm-usb list | grep -F "$usb_device" | grep -F "(attached to $VM)" >/dev/null; then
+    if qvm-usb list | grep -F "$usb_device" | grep -F "$VM" >/dev/null; then
+        echo "Device $usb_device is already connected to $VM, not doing anything."
+        exit 1;
+    else
+        # Finds the sys-usb's assigned name for the USB device
+        assignment="$(qvm-usb list | grep "$usb_device" | awk '{ print $1; }')";
+ 
+        echo "Connecting $assignment to $VM...";
+        qvm-usb attach "$VM" "$assignment" || {
+            echo "Could not attach the device $usb_device to $VM." >&2
+            exit 1;
+        }
+    fi;
+ 
+    echo "Reconfiguring pulseaudio for bluetooth audio in $VM..."
+        qvm-run "$VM" -- "killall pulseaudio"
+        qvm-run "$VM" -- "pulseaudio --start"
+        qvm-run "$VM" -- "blueman-assistant --device=${headphones}"
+        qvm-run "$VM" -- "pavucontrol"
+fi;
