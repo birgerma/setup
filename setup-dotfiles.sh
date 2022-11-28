@@ -21,8 +21,15 @@ if  grep -q "${gitkey1}" "${HOME}/.ssh/known_hosts" ; then
 fi
 #echo $gitkey1 >> ~/.ssh/known_hosts
 
-#REMOTE_URL=git@github.com:birgerma/config.git
-REMOTE_URL=https://github.com/birgerma/config.git
+echo "First arg:$1"
+
+if [ $1 == "SSH" ] ; then
+	REMOTE_URL=git@github.com:birgerma/config.git
+else
+	echo "NO SSH"
+	REMOTE_URL=https://github.com/birgerma/config.git
+fi
+
 CONFIG_ALIAS='alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"'
 
 function add_alias(){
@@ -41,11 +48,9 @@ git clone --bare $REMOTE_URL $HOME/.cfg || true
 /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME push --set-upstream origin main
 
 # Backup and rename
+# mv $HOME/.bashrc "$HOME/.bashrc.bak$(date +%s)"
+# /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
 
-/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
-
-add_alias "${CONFIG_ALIAS}"
-
-
-
-
+# add_alias "${CONFIG_ALIAS}"
+echo "Run \"${CONFIG_ALIAS}\" to add alias. Add to .bashrc if you wish."
+echo "Run \"config checkout\" to extract all dotfiles. Resolve potential duplicates."

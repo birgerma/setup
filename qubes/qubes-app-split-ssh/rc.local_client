@@ -1,4 +1,5 @@
-# Uncomment next line to enable ssh agent forwarding to the named VM
+# SPLIT SSH CONFIGURATION >>>
+# replace "vault" with your AppVM name which stores the ssh private key(s)
 SSH_VAULT_VM="vault"
 
 if [ "$SSH_VAULT_VM" != "" ]; then
@@ -6,4 +7,4 @@ if [ "$SSH_VAULT_VM" != "" ]; then
 	rm -f "$SSH_SOCK"
 	sudo -u user /bin/sh -c "umask 177 && ncat -k -l -U '$SSH_SOCK' -c 'qrexec-client-vm $SSH_VAULT_VM /etc/qubes-rpc/qubes.SshAgent' &"
 fi
-
+# <<< SPLIT SSH CONFIGURATION

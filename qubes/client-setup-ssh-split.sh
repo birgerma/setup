@@ -14,10 +14,11 @@ fi
 sudo chmod +x /rw/config/rc.local
 
 
-if grep -q "SSH_VAULT_VM" $HOME/.bashrc ; then
+BASHRC_PATH=$HOME/.bashrc
+if grep -q "SSH_VAULT_VM" $BASHRC_PATH ; then
     echo "Do nothing in bashrc" ;
 else
-    cat qubes-app-split-ssh/bashrc_client | tee -a $HOME/.bashrc
+    cat qubes-app-split-ssh/bashrc_client | tee -a $BASHRC_PATH
 fi
 
 echo "All set, restart client vm for changes"
